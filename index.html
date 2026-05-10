@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <canvas id="starfield" aria-hidden="true" role="presentation"></canvas>
 
@@ -55,9 +58,12 @@
                     <source src="assets/videos/planet-3d-alpha.webm" type="video/webm">
                     <source src="assets/videos/planet-3d-min.mp4" type="video/mp4">
                 </video>
-                <img class="hero__star hero__star--left" src="assets/images/estrela-min.webp" alt="" aria-hidden="true" width="72" height="72" decoding="async">
-                <img class="hero__star hero__star--right" src="assets/images/estrela-min.webp" alt="" aria-hidden="true" width="72" height="72" decoding="async">
-                <img class="hero__star hero__star--center" src="assets/images/estrela-min.webp" alt="" aria-hidden="true" width="56" height="56" decoding="async">
+                <img class="hero__star hero__star--left" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                    width="72" height="72" decoding="async">
+                <img class="hero__star hero__star--right" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                    width="72" height="72" decoding="async">
+                <img class="hero__star hero__star--center" src="assets/images/estrela-min.webp" alt=""
+                    aria-hidden="true" width="56" height="56" decoding="async">
             </div>
 
             <div class="hero__content-layer">
@@ -78,11 +84,8 @@
             </div>
         </section>
 
-        <section
-            id="marquee-personagens"
-            class="marquee-personagens"
-            aria-label="Letreiro: Super Mario Galaxy, nos cinemas, aventura pelo cosmos e personagens"
-        >
+        <section id="marquee-personagens" class="marquee-personagens"
+            aria-label="Letreiro: Super Mario Galaxy, nos cinemas, aventura pelo cosmos e personagens">
             <div class="marquee-personagens__viewport">
                 <div class="marquee-personagens__track">
                     <div class="marquee-personagens__sequence">
@@ -97,8 +100,6 @@
                         <span class="marquee-personagens__text">Luigi</span>
                         <span class="marquee-personagens__sep" aria-hidden="true">/</span>
                         <span class="marquee-personagens__text">Rosalina</span>
-                        <span class="marquee-personagens__sep" aria-hidden="true">/</span>
-                        <span class="marquee-personagens__text">P</span>
                         <span class="marquee-personagens__sep" aria-hidden="true">/</span>
                     </div>
                     <div class="marquee-personagens__sequence" aria-hidden="true">
@@ -119,11 +120,10 @@
             </div>
         </section>
 
-        <section
-            id="personagens"
-            class="personagens"
-            aria-labelledby="personagens-heading"
-        >
+        <section id="personagens" class="personagens" aria-labelledby="personagens-heading">
+            <div class="personagens__particles-bg" aria-hidden="true">
+                <div id="personagens-particles-js"></div>
+            </div>
             <div class="personagens__header">
                 <p class="personagens__eyebrow">CONHEÇA O ELENCO</p>
                 <h2 id="personagens-heading" class="personagens__title">Personagens</h2>
@@ -158,106 +158,179 @@
             </div>
         </section>
 
-        
+        <section id="trailers" class="trailers" aria-labelledby="trailers-title">
+            <div class="trailers__bg-text" aria-hidden="true">TRAILERS</div>
 
-        <section id="trailers" class="trailers">
-            <div class="trailers__inner">
-          
-              <h2 class="trailers__title">Trailers oficiais</h2>
-              <p class="trailers__subtitle">Clipes da aventura no espaço.</p>
-          
-              <div class="trailers__video-frame">
-                <div class="trailers__video-border"></div>
-          
-                <div class="trailers__video-wrapper">
-                  <iframe
-                    src=""
-                    loading="lazy"
-                    title="Trailer oficial"
-                    allowfullscreen
-                  ></iframe>
+            <header class="trailers__header">
+                <p class="trailers__eyebrow">Assista agora</p>
+                <h2 id="trailers-title" class="trailers__title">Trailers oficiais</h2>
+                <p class="trailers__subtitle">Clipes da aventura no espaco</p>
+            </header>
+
+            <div class="trailers__carousel" role="region" aria-roledescription="carousel" aria-label="Trailers oficiais"
+                tabindex="0">
+                <p id="trailers-carousel-live" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+                <div class="trailers__viewport">
+                    <ul class="trailers__track">
+                        <li id="trailers-slide-0" class="trailers__slide" aria-roledescription="slide" aria-label="1 de 4">
+                            <div class="trailers__player">
+                                <iframe
+                                    data-src="https://www.youtube-nocookie.com/embed/8uaQnl9Bbdw?rel=0"
+                                    src="https://www.youtube-nocookie.com/embed/8uaQnl9Bbdw?rel=0"
+                                    title="Super Mario Galaxy: O Filme — trailer principal"
+                                    loading="lazy"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li id="trailers-slide-1" class="trailers__slide" aria-roledescription="slide" aria-label="2 de 4">
+                            <div class="trailers__player">
+                                <iframe
+                                    data-src="https://www.youtube-nocookie.com/embed/QVD48BOcwms?rel=0"
+                                    title="The Super Mario Bros. Movie — teaser oficial"
+                                    loading="lazy"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li id="trailers-slide-2" class="trailers__slide" aria-roledescription="slide" aria-label="3 de 4">
+                            <div class="trailers__player">
+                                <iframe
+                                    data-src="https://www.youtube-nocookie.com/embed/TnGl01FkMMo?rel=0"
+                                    title="The Super Mario Bros. Movie — trailer oficial"
+                                    loading="lazy"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li id="trailers-slide-3" class="trailers__slide" aria-roledescription="slide" aria-label="4 de 4">
+                            <div class="trailers__player">
+                                <iframe
+                                    data-src="https://www.youtube-nocookie.com/embed/M3bHQqc62DE?rel=0"
+                                    title="The Super Mario Bros. Movie — trailer final"
+                                    loading="lazy"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-              </div>
-          
-              <div class="trailers__nav-row">
-          
-                <button class="trailers__arrow trailers__arrow--prev" aria-label="Trailer anterior">
-                  &#10094;
-                </button>
-          
-                <div class="trailers__bullets" aria-label="Selecionar trailer">
-                  <button class="trailers__bullet trailers__bullet--active" type="button"></button>
-                  <button class="trailers__bullet" type="button"></button>
-                  <button class="trailers__bullet" type="button"></button>
+
+                <div class="trailers__controls">
+                    <button type="button" class="trailers__arrow trailers__arrow--prev" aria-label="Trailer anterior">
+                        <span aria-hidden="true">&#8249;</span>
+                    </button>
+                    <div class="trailers__dots" role="tablist" aria-label="Selecao de trailers">
+                        <button type="button" class="trailers__dot is-active" role="tab" aria-label="Ir para trailer 1"
+                            aria-selected="true" aria-controls="trailers-slide-0" id="trailers-tab-0"></button>
+                        <button type="button" class="trailers__dot" role="tab" aria-label="Ir para trailer 2"
+                            aria-selected="false" aria-controls="trailers-slide-1" id="trailers-tab-1"></button>
+                        <button type="button" class="trailers__dot" role="tab" aria-label="Ir para trailer 3"
+                            aria-selected="false" aria-controls="trailers-slide-2" id="trailers-tab-2"></button>
+                        <button type="button" class="trailers__dot" role="tab" aria-label="Ir para trailer 4"
+                            aria-selected="false" aria-controls="trailers-slide-3" id="trailers-tab-3"></button>
+                    </div>
+                    <button type="button" class="trailers__arrow trailers__arrow--next" aria-label="Proximo trailer">
+                        <span aria-hidden="true">&#8250;</span>
+                    </button>
                 </div>
-          
-                <button class="trailers__arrow trailers__arrow--next" aria-label="Próximo trailer">
-                  &#10095;
-                </button>
-          
-              </div>
-          
             </div>
-          </section>
-          
-          <section id="estreia" class="estreia" data-target-date="[DATA_DA_ESTREIA]">
-            <div class="estreia__inner">
-          
-              <p class="estreia__frase">
-                Cada estrela guarda uma história. A sua começa agora.
-              </p>
-          
-              <h2 class="estreia__titulo">
-                SUPER MARIO GALAXY O FILME
-              </h2>
-          
-              <p class="estreia__label-contador">
-                ESTREIA NOS CINEMAS EM
-              </p>
-          
-              <div class="estreia__contador">
-          
-                <div class="estreia__contador-bloco">
-                  <span class="estreia__contador-numero" data-countdown="dias">00</span>
-                  <span class="estreia__contador-label">DIAS</span>
+        </section>
+
+        <section id="estreia" class="estreia" aria-labelledby="estreia-heading">
+            <div class="estreia__nebula estreia__nebula--top-left" aria-hidden="true"></div>
+            <div class="estreia__nebula estreia__nebula--top-right" aria-hidden="true"></div>
+            <div class="estreia__nebula estreia__nebula--bottom-left" aria-hidden="true"></div>
+            <div class="estreia__galaxy" aria-hidden="true"></div>
+
+            <img class="estreia__star estreia__star--tl" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                width="56" height="56" decoding="async">
+            <img class="estreia__star estreia__star--tr" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                width="56" height="56" decoding="async">
+            <img class="estreia__star estreia__star--mr" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                width="56" height="56" decoding="async">
+            <img class="estreia__star estreia__star--bl" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                width="56" height="56" decoding="async">
+            <img class="estreia__star estreia__star--br" src="assets/images/estrela-min.webp" alt="" aria-hidden="true"
+                width="56" height="56" decoding="async">
+
+            <div class="estreia__container">
+                <header class="estreia__header">
+                    <h2 id="estreia-heading" class="estreia__title">
+                        Cada <span class="estreia__highlight">estrela</span> guarda uma
+                        <br>
+                        história. A sua começa <span class="estreia__highlight estreia__highlight--rose">agora.</span>
+                    </h2>
+                    <p class="estreia__subtitle">SUPER MARIO GALAXY: O FILME</p>
+                    <div class="estreia__divider" aria-hidden="true"></div>
+                </header>
+
+                <div class="estreia__countdown-block">
+                    <p class="estreia__countdown-label">ESTREIA NOS CINEMAS EM</p>
+
+                    <p id="estreia-countdown-live" class="sr-only" aria-live="polite"></p>
+
+                    <div class="estreia__countdown-card" aria-hidden="true">
+                        <div class="countdown">
+                            <div class="countdown-unit" data-unit="dia">
+                                <div class="countdown-card">
+                                    <div class="countdown-card__inner">
+                                        <span class="countdown-value">0</span>
+                                    </div>
+                                </div>
+                                <span class="countdown-unit__label">DIAS</span>
+                            </div>
+                            <div class="countdown-unit" data-unit="hor">
+                                <div class="countdown-card">
+                                    <div class="countdown-card__inner">
+                                        <span class="countdown-value">00</span>
+                                    </div>
+                                </div>
+                                <span class="countdown-unit__label">HORAS</span>
+                            </div>
+                            <div class="countdown-unit" data-unit="min">
+                                <div class="countdown-card">
+                                    <div class="countdown-card__inner">
+                                        <span class="countdown-value">00</span>
+                                    </div>
+                                </div>
+                                <span class="countdown-unit__label">MIN</span>
+                            </div>
+                            <div class="countdown-unit" data-unit="seg">
+                                <div class="countdown-card">
+                                    <div class="countdown-card__inner">
+                                        <span class="countdown-value">00</span>
+                                    </div>
+                                </div>
+                                <span class="countdown-unit__label">SEG</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="estreia__date">Dia 25 de Dezembro, 2026</p>
                 </div>
-          
-                <div class="estreia__contador-bloco">
-                  <span class="estreia__contador-numero" data-countdown="horas">00</span>
-                  <span class="estreia__contador-label">HORAS</span>
-                </div>
-          
-                <div class="estreia__contador-bloco">
-                  <span class="estreia__contador-numero" data-countdown="min">00</span>
-                  <span class="estreia__contador-label">MIN</span>
-                </div>
-          
-                <div class="estreia__contador-bloco">
-                  <span class="estreia__contador-numero" data-countdown="seg">00</span>
-                  <span class="estreia__contador-label">SEG</span>
-                </div>
-          
-              </div>
-          
-              <p class="estreia__data">
-                Dia 25 de Dezembro, 2026
-              </p>
-          
-              <div class="estreia__legal">
-                <p>Super Mario Galaxy: O Filme</p>
-                <p>Projeto conceitual para fins educacionais e ilustrativos. Nintendo, Super Mario e personagens relacionados são marcas registradas da Nintendo Co., Ltd.</p>
-              </div>
-          
+
+               
             </div>
-          </section>
-          
-    </main> 
-      
+
+            <footer class="estreia__footer">
+                <p class="estreia__project">Super Mario Galaxy: O Filme</p>
+                <p class="estreia__disclaimer">
+                    Projeto conceitual para fins educacionais. Nintendo, Mario e personagens relacionados são marcas
+                    registradas da Nintendo Co., Ltd.
+                </p>
+            </footer>
+        </section>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
     <script src="js/script.js"></script>
-    <script src="js/scroll-animations.js"></script>
 </body>
+
 </html>

@@ -393,7 +393,7 @@ function initPlanetZoomAnimation() {
       end: '+=100%',
       scrub: true,
     },
-  }).fromTo(
+  }  ).fromTo(
     planet,
     {
       xPercent: -50,
@@ -413,6 +413,665 @@ function initPlanetZoomAnimation() {
   );
 }
 
+function initPersonagensParallax() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.getElementById('personagens');
+  if (!section) return;
+
+  if (
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    return;
+  }
+
+  const parallaxConfigs = [
+    {
+      selector: '.personagem--mario',
+      from: { x: -14, y: -42 },
+      to: { x: 22, y: 188 },
+      scrub: 0.8,
+    },
+    {
+      selector: '.personagem--luigi',
+      from: { x: 18, y: -28 },
+      to: { x: -32, y: 210 },
+      scrub: 3.3,
+    },
+    {
+      selector: '.personagem--peach',
+      from: { x: -8, y: -50 },
+      to: { x: 24, y: 164 },
+      scrub: 1.05,
+    },
+    {
+      selector: '.personagem--rosalina',
+      from: { x: -20, y: -24 },
+      to: { x: 36, y: 232 },
+      scrub: 1.45,
+    },
+    {
+      selector: '.personagem--yoshi',
+      from: { x: 14, y: -38 },
+      to: { x: -46, y: 176 },
+      scrub: 0.65,
+    },
+    {
+      selector: '.personagem--bowser-jr',
+      from: { x: -16, y: -18 },
+      to: { x: 30, y: 198 },
+      scrub: 1.15,
+    },
+  ];
+
+  ScrollTrigger.matchMedia({
+    '(prefers-reduced-motion: no-preference) and (min-width: 768px)': function () {
+      parallaxConfigs.forEach((cfg) => {
+        const el = document.querySelector(cfg.selector);
+        if (!el) return;
+
+        gsap.fromTo(
+          el,
+          {
+            x: cfg.from.x,
+            y: cfg.from.y,
+            force3D: true,
+          },
+          {
+            x: cfg.to.x,
+            y: cfg.to.y,
+            ease: 'none',
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: cfg.scrub,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      });
+    },
+  });
+}
+
+/**
+ * Fundo particles.js na seção #personagens (cores via tokens --particles-* no :root).
+ */
+function initPersonagensBg() {
+  const section = document.getElementById('personagens');
+  const holderId = 'personagens-particles-js';
+
+  if (!section || typeof window.particlesJS !== 'function') {
+    return;
+  }
+
+  const root = document.documentElement;
+
+  function hexToRgbParticles(hex) {
+    if (typeof hex !== 'string' || !hex.trim()) {
+      return null;
+    }
+    const h = hex.trim();
+    if (typeof window.hexToRgb === 'function') {
+      return window.hexToRgb(h);
+    }
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const expanded = h.replace(shorthandRegex, (_m, r, g, b) => r + r + g + g + b + b);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(expanded);
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
+  }
+
+  function readParticleColorTokens() {
+    const cs = getComputedStyle(root);
+    return {
+      dot: cs.getPropertyValue('--particles-dot').trim(),
+      line: cs.getPropertyValue('--particles-line').trim(),
+      accent: cs.getPropertyValue('--particles-accent').trim(),
+    };
+  }
+
+  function applyParticlesColorsFromCss(pJS) {
+    const t = readParticleColorTokens();
+    const dot = t.dot || '#00f5ff';
+    const line = t.line || '#00d9ff';
+    const accent = t.accent || '#0096c7';
+
+    pJS.particles.color.value = dot;
+    const rgbDot = hexToRgbParticles(dot);
+    if (rgbDot) {
+      pJS.particles.color.rgb = rgbDot;
+    }
+
+    pJS.particles.shape.stroke.color = accent;
+
+    pJS.particles.line_linked.color = line;
+    const rgbLine = hexToRgbParticles(line);
+    if (rgbLine) {
+      pJS.particles.line_linked.color_rgb_line = rgbLine;
+    }
+  }
+
+  const prefersReduceMq =
+    typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)')
+      : null;
+
+  function prefersReducedMotion() {
+    return prefersReduceMq ? prefersReduceMq.matches : false;
+  }
+
+  if (prefersReducedMotion()) {
+    section.classList.add('personagens--particles-reduced');
+    return;
+  }
+
+  const narrowMq =
+    typeof window.matchMedia === 'function'
+      ? window.matchMedia('(max-width: 767.98px)')
+      : null;
+
+  function isNarrowViewport() {
+    return narrowMq ? narrowMq.matches : false;
+  }
+
+  function buildParticlesConfig() {
+    const t = readParticleColorTokens();
+    const mobile = isNarrowViewport();
+
+    return {
+      particles: {
+        number: {
+          value: mobile ? 80 : 140,
+          density: { enable: true, value_area: 800 },
+        },
+        color: { value: t.dot || '#00f5ff' },
+        shape: {
+          type: 'circle',
+          stroke: {
+            width: 0.5,
+            color: t.accent || '#0096c7',
+          },
+        },
+        opacity: {
+          value: 0.7,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 1,
+            opacity_min: 0.3,
+            sync: false,
+          },
+        },
+        size: {
+          value: 3,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 2,
+            size_min: 1,
+            sync: false,
+          },
+        },
+        line_linked: {
+          enable: true,
+          distance: 160,
+          color: t.line || '#00d9ff',
+          opacity: 0.4,
+          width: 1.2,
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: 'none',
+          random: true,
+          straight: false,
+          out_mode: 'bounce',
+        },
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'grab' },
+          onclick: { enable: !mobile, mode: 'push' },
+          resize: true,
+        },
+        modes: {
+          grab: {
+            distance: 220,
+            line_linked: { opacity: 0.8 },
+          },
+          push: { particles_nb: 4 },
+        },
+      },
+      retina_detect: !mobile,
+    };
+  }
+
+  window.particlesJS(holderId, buildParticlesConfig());
+
+  const pjsEntry = window.pJSDom && window.pJSDom[window.pJSDom.length - 1];
+  const pJS = pjsEntry && pjsEntry.pJS;
+  if (!pJS) {
+    return;
+  }
+
+  applyParticlesColorsFromCss(pJS);
+
+  const cancelRaf =
+    window.cancelRequestAnimFrame ||
+    window.cancelAnimationFrame ||
+    window.webkitCancelRequestAnimationFrame ||
+    clearTimeout;
+
+  let viewportPaused = false;
+
+  function pausePersonagensDraw() {
+    if (viewportPaused) return;
+    cancelRaf(pJS.fn.drawAnimFrame);
+    viewportPaused = true;
+  }
+
+  function resumePersonagensDraw() {
+    if (!viewportPaused) return;
+    viewportPaused = false;
+    pJS.fn.vendors.draw();
+  }
+
+  const io =
+    typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver(
+          (entries) => {
+            const visible = entries.some((e) => e.isIntersecting);
+            if (visible) {
+              resumePersonagensDraw();
+            } else {
+              pausePersonagensDraw();
+            }
+          },
+          { root: null, threshold: 0, rootMargin: '0px' }
+        )
+      : null;
+
+  if (io) {
+    io.observe(section);
+  }
+
+  let themeDebounce = 0;
+  const themeObserver =
+    typeof MutationObserver !== 'undefined'
+      ? new MutationObserver(() => {
+          window.clearTimeout(themeDebounce);
+          themeDebounce = window.setTimeout(() => {
+            applyParticlesColorsFromCss(pJS);
+          }, 50);
+        })
+      : null;
+
+  if (themeObserver) {
+    themeObserver.observe(root, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme'],
+    });
+  }
+
+  if (prefersReduceMq) {
+    const onReduce = () => {
+      if (prefersReduceMq.matches) {
+        pausePersonagensDraw();
+      } else {
+        resumePersonagensDraw();
+      }
+    };
+    if (typeof prefersReduceMq.addEventListener === 'function') {
+      prefersReduceMq.addEventListener('change', onReduce);
+    } else {
+      prefersReduceMq.addListener(onReduce);
+    }
+  }
+}
+
+/**
+ * Contador regressivo (#estreia): mudança com leve deslize para baixo nos dígitos.
+ */
+function initEstreiaCountdown() {
+  /** @typedef {{ dia: number; hor: number; min: number; seg: number }} TempoSplit */
+
+  if (!document.querySelector('#estreia .countdown-unit')) return;
+
+  const ALVO_ESTREIA = new Date('2026-12-25T00:00:00').getTime();
+  const UNIT_KEYS = /** @type {const} */ (['dia', 'hor', 'min', 'seg']);
+  const liveEl = document.getElementById('estreia-countdown-live');
+  let intervalId = 0;
+
+  const reduceMq =
+    typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)')
+      : null;
+
+  function prefersReducedMotion() {
+    return reduceMq ? reduceMq.matches : false;
+  }
+
+  /** @returns {TempoSplit} */
+  function calcularRestante() {
+    const agora = Date.now();
+    const diff = Math.max(0, ALVO_ESTREIA - agora);
+    return {
+      dia: Math.floor(diff / 86400000),
+      hor: Math.floor((diff % 86400000) / 3600000),
+      min: Math.floor((diff % 3600000) / 60000),
+      seg: Math.floor((diff % 60000) / 1000),
+    };
+  }
+
+  /** @returns {TempoSplit} */
+  function estadoTravadoZerado() {
+    return { dia: 0, hor: 0, min: 0, seg: 0 };
+  }
+
+  /**
+   * @param {number} n
+   * @param {'dia'|'hor'|'min'|'seg'} unit
+   * @returns {string}
+   */
+  function formatar(n, unit) {
+    const diff = ALVO_ESTREIA - Date.now();
+    if (diff <= 0 && unit === 'dia') return '000';
+    if (unit === 'dia') return String(n);
+    return String(n).padStart(2, '0');
+  }
+
+  /**
+   * @param {'dia'|'hor'|'min'|'seg'} unitKey
+   * @returns {HTMLElement | null}
+   */
+  function elValorParaUnidade(unitKey) {
+    const root = document.querySelector(`.countdown-unit[data-unit="${unitKey}"]`);
+    if (!root) return null;
+    return root.querySelector('.countdown-value');
+  }
+
+  /**
+   * @param {'dia'|'hor'|'min'|'seg'} unitKey
+   * @param {string} formatted
+   */
+  function pintarValorEstatico(unitKey, formatted) {
+    const el = elValorParaUnidade(unitKey);
+    if (!el) return;
+    el.classList.remove('countdown-value--drop');
+    el.textContent = formatted;
+  }
+
+  /**
+   * @param {'dia'|'hor'|'min'|'seg'} unitKey
+   * @param {string} formatted
+   */
+  function aplicarMudancaComDeslize(unitKey, formatted) {
+    const el = elValorParaUnidade(unitKey);
+    if (!el) return;
+
+    el.classList.remove('countdown-value--drop');
+    void el.offsetWidth;
+    el.textContent = formatted;
+    el.classList.add('countdown-value--drop');
+
+    const onEnd = (e) => {
+      if (e.animationName !== 'countdown-slide-down') return;
+      el.removeEventListener('animationend', onEnd);
+      el.classList.remove('countdown-value--drop');
+    };
+    el.addEventListener('animationend', onEnd);
+  }
+
+  /** @type {TempoSplit} */
+  let valorAtual;
+
+  let ultimoBlocoMinutoAnunciado = -1;
+
+  /**
+   * @param {TempoSplit} v
+   * @returns {number}
+   */
+  function paraBlocoMinuto(v) {
+    return ((v.dia * 24 + v.hor) * 60 + v.min);
+  }
+
+  /**
+   * @param {TempoSplit} v
+   */
+  function atualizarAriaSeNecessario(v) {
+    if (!liveEl) return;
+
+    const diff = ALVO_ESTREIA - Date.now();
+    if (diff <= 0) {
+      if (ultimoBlocoMinutoAnunciado !== -2) {
+        liveEl.textContent =
+          'Contagem terminada para a estreia de Super Mario Galaxy: O Filme no dia vinte e cinco de dezembro de dois mil e vinte e seis.';
+        ultimoBlocoMinutoAnunciado = -2;
+      }
+      return;
+    }
+
+    const bloco = paraBlocoMinuto(v);
+    if (bloco !== ultimoBlocoMinutoAnunciado || ultimoBlocoMinutoAnunciado === -1) {
+      ultimoBlocoMinutoAnunciado = bloco;
+
+      function plural(unit, label, singularLabel) {
+        return `${unit} ${unit === 1 ? singularLabel : label}`;
+      }
+
+      const partes = [
+        plural(v.dia, 'dias', 'dia'),
+        plural(v.hor, 'horas', 'hora'),
+        plural(v.min, 'minutos', 'minuto'),
+        plural(v.seg, 'segundos', 'segundo'),
+      ];
+
+      liveEl.textContent =
+        `Restam ${partes.slice(0, 3).join(', ')} e ${partes[3]} para a estreia nos cinemas na meia-noite local de vinte e cinco de dezembro de dois mil e vinte e seis.`;
+    }
+  }
+
+  /**
+   * Pinta todos os dígitos a partir dos números (sem animação). Usado ao voltar para a aba.
+   * @param {TempoSplit} v
+   */
+  function sincronizarTudoSilencioso(v) {
+    document.querySelectorAll('.countdown-value.countdown-value--drop').forEach((el) => {
+      el.classList.remove('countdown-value--drop');
+    });
+
+    for (let i = 0; i < UNIT_KEYS.length; i++) {
+      const key = UNIT_KEYS[i];
+      pintarValorEstatico(key, formatar(v[key], key));
+    }
+
+    atualizarAriaSeNecessario(v);
+  }
+
+  /** @returns {TempoSplit} */
+  function obterOuTravar() {
+    const diff = ALVO_ESTREIA - Date.now();
+    if (diff <= 0) return estadoTravadoZerado();
+    return calcularRestante();
+  }
+
+  /** Conclui pintura/alvo apenas uma vez quando a data já passou ou acaba agora */
+  let contagemEncerrada = false;
+
+  function finalizarContagemSeNecessario() {
+    valorAtual = estadoTravadoZerado();
+    sincronizarTudoSilencioso(valorAtual);
+
+    if (intervalId) {
+      window.clearInterval(intervalId);
+      intervalId = 0;
+    }
+
+    if (!contagemEncerrada) {
+      contagemEncerrada = true;
+      window.dispatchEvent(
+        new CustomEvent('estreia-countdown-complete', {
+          bubbles: true,
+          detail: { alvoTimestamp: ALVO_ESTREIA },
+        }),
+      );
+    }
+  }
+
+  function tickContador() {
+    if (Date.now() >= ALVO_ESTREIA) {
+      finalizarContagemSeNecessario();
+      return;
+    }
+
+    const novo = calcularRestante();
+
+    for (let i = 0; i < UNIT_KEYS.length; i++) {
+      const key = UNIT_KEYS[i];
+      if (novo[key] !== valorAtual[key]) {
+        const txt = formatar(novo[key], key);
+        if (prefersReducedMotion()) {
+          pintarValorEstatico(key, txt);
+        } else {
+          aplicarMudancaComDeslize(key, txt);
+        }
+        valorAtual[key] = novo[key];
+      }
+    }
+
+    atualizarAriaSeNecessario(novo);
+  }
+
+  valorAtual = calcularRestante();
+
+  if (Date.now() >= ALVO_ESTREIA) {
+    finalizarContagemSeNecessario();
+  } else {
+    sincronizarTudoSilencioso(valorAtual);
+    intervalId = window.setInterval(tickContador, 1000);
+  }
+
+  document.addEventListener(
+    'visibilitychange',
+    () => {
+      if (document.visibilityState !== 'visible') return;
+
+      if (Date.now() >= ALVO_ESTREIA) {
+        finalizarContagemSeNecessario();
+        return;
+      }
+
+      valorAtual = obterOuTravar();
+      sincronizarTudoSilencioso(valorAtual);
+
+      if (!intervalId) {
+        intervalId = window.setInterval(tickContador, 1000);
+      }
+    },
+    { passive: true },
+  );
+
+  window.addEventListener(
+    'beforeunload',
+    () => {
+      if (intervalId) window.clearInterval(intervalId);
+    },
+    { passive: true },
+  );
+}
+
+function initTrailersCarousel() {
+  const root = document.querySelector('.trailers__carousel');
+  if (!root) return;
+
+  const track = root.querySelector('.trailers__track');
+  const slides = root.querySelectorAll('.trailers__slide');
+  const iframes = root.querySelectorAll('.trailers__player iframe');
+  const prevBtn = root.querySelector('.trailers__arrow--prev');
+  const nextBtn = root.querySelector('.trailers__arrow--next');
+  const dots = root.querySelectorAll('.trailers__dots .trailers__dot');
+  const liveEl = document.getElementById('trailers-carousel-live');
+
+  const total = slides.length;
+  if (!track || total === 0 || iframes.length !== total) return;
+
+  let index = 0;
+
+  function setIframeSources(activeIndex) {
+    iframes.forEach((iframe, i) => {
+      const url = iframe.getAttribute('data-src');
+      if (!url) return;
+      if (i === activeIndex) {
+        if (iframe.src !== url) iframe.src = url;
+      } else {
+        iframe.src = 'about:blank';
+      }
+    });
+  }
+
+  function announce() {
+    if (!liveEl) return;
+    liveEl.textContent = `Trailer ${index + 1} de ${total}`;
+  }
+
+  function updateUI() {
+    track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === index);
+      dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      if (i === index) dot.setAttribute('aria-current', 'true');
+      else dot.removeAttribute('aria-current');
+    });
+    slides.forEach((slide, i) => {
+      slide.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+    });
+    setIframeSources(index);
+    announce();
+  }
+
+  function goTo(newIndex) {
+    index = ((newIndex % total) + total) % total;
+    updateUI();
+  }
+
+  prevBtn?.addEventListener('click', () => goTo(index - 1));
+  nextBtn?.addEventListener('click', () => goTo(index + 1));
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goTo(i));
+  });
+
+  root.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      goTo(index - 1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      goTo(index + 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    }
+  });
+
+  updateUI();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initFloatingNav();
   initStarfield();
@@ -420,4 +1079,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initYoshiScrollAnimation();
   initHeroContentScrollAnimation();
   initPlanetZoomAnimation();
+  initPersonagensParallax();
+  initPersonagensBg();
+  initTrailersCarousel();
+  initEstreiaCountdown();
 });
